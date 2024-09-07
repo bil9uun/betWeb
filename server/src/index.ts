@@ -5,6 +5,7 @@ import cors from "cors";
 
 import AuthRoutes from "./routes/auth.ts";
 import UserRoutes from "./routes/user.ts";
+import MatchRoutes from "./routes/match.ts";
 
 dotenv.config();
 const app = express();
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", AuthRoutes);
 app.use("/user", UserRoutes);
+app.use("/match", MatchRoutes);
 
 const MONGO_URI = process.env.MONGO_URI as string;
 mongoose
