@@ -10,3 +10,8 @@
 .main-container {
   min-height: calc(100vh - 136px);
 }
+.card-container {
+  -webkit-box-shadow: -2px -81px 68px -21px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -2px -81px 68px -21px rgba(0, 0, 0, 0.75);
+  box-shadow: -2px -81px 68px -21px rgba(0, 0, 0, 0.75);
+}
