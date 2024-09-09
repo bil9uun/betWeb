@@ -6,31 +6,13 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import myAxios from "@/utils/myAxios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
-interface IUser {
-  name?: string;
-  email?: string;
-  password?: string;
-  avatarImage?: string;
-  otp?: string;
-  createdAt?: string;
-  _id?: string;
-}
+//comp
 
-interface IUserContext {
-  users: IUser[];
-  userToken: string | null;
-  loggedUser?: IUser;
-  logIn: ({ email, password }: ILogin) => void;
-}
-
-interface ILogin {
-  email: string;
-  password: string;
-}
+import myAxios from "@/utils/myAxios";
+import { ILogin, IUser, IUserContext } from "@/interface";
 
 export const UserContext = createContext<IUserContext>({} as IUserContext);
 
@@ -53,12 +35,16 @@ export const UserProvider = ({ children }: PropsWithChildren<{}>) => {
     }
   };
 
+  const sortByDateDesc = (data: IUser[]) => {
+    return data.sort((a: IUser, b: IUser) => b.balance! - a.balance!);
+  };
+
   const getAllUsers = async () => {
     try {
       const {
         data: { users },
       } = await myAxios.get("/user/get");
-      setUsers(users);
+      setUsers(sortByDateDesc(users));
     } catch (error) {
       console.log(`Error: ${error}`);
     }
@@ -86,13 +72,55 @@ export const UserProvider = ({ children }: PropsWithChildren<{}>) => {
     }
   };
 
+  const signUp = async ({ email, name, password }: ILogin) => {
+    try {
+      const {
+        data: { user },
+      } = await myAxios.post("/auth/signup", {
+        userEmail: email,
+        userName: name,
+        userPassword: password,
+      });
+      toast.success("Sign up successfully");
+      router.push("/login");
+    } catch (error: any) {
+      console.log("Error during signUp", error);
+      toast.error(`Error: ${error?.response?.data?.message || ""}`);
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.reload();
+  };
+
+  // const checkUser = () => {
+  //   if (!loggedUser) {
+  //     router.push("/");
+  //   }
+  // };
+  // useEffect(() => {
+  //   checkUser();
+  // }, [loggedUser]);
+
   useEffect(() => {
     getAllUsers();
     isLogged();
   }, []);
 
   return (
-    <UserContext.Provider value={{ users, userToken, loggedUser, logIn }}>
+    <UserContext.Provider
+      value={{
+        users,
+        userToken,
+        loggedUser,
+        logIn,
+        logout,
+        signUp,
+        setLoggedUser,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

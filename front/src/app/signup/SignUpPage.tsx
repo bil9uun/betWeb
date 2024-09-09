@@ -1,4 +1,5 @@
 "use client";
+
 import { useFormik } from "formik";
 import Link from "next/link";
 import * as yup from "yup";
@@ -9,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useUser } from "@/context/userProvider";
 
-const LogInPage = () => {
+const SignUp = () => {
   const validationSchema = yup.object({
     email: yup
       .string()
@@ -20,20 +21,25 @@ const LogInPage = () => {
       .max(50, "Email must be under 50 character")
       .required("Email is required")
       .email("Email is not valid"),
+    name: yup
+      .string()
+
+      .max(50, "Name must be under 50 character")
+      .required("Name is required"),
     password: yup
       .string()
       .required("Password is required")
       .min(6, "Password must be at least 6 characters"),
   });
 
-  const { logIn } = useUser();
+  const { signUp } = useUser();
 
   const formik = useFormik({
-    onSubmit: ({ email, password }) => {
-      console.log(email), console.log(password);
-      logIn({ email, password });
+    onSubmit: ({ email, password, name }) => {
+      console.log(email), console.log(password), console.log(name);
+      signUp({ email, name, password });
     },
-    initialValues: { email: "", password: "" },
+    initialValues: { email: "", password: "", name: "" },
     validateOnChange: false,
     validateOnBlur: false,
     validationSchema,
@@ -51,6 +57,15 @@ const LogInPage = () => {
           value={formik.values.email}
           onChange={formik.handleChange}
         />
+        <p>{formik.errors.name}</p>
+        <Input
+          className="rounded-xl text-black"
+          type="name"
+          placeholder="Name"
+          name="name"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+        />
         <p className="text-white">{formik.errors.password}</p>
         <Input
           className="rounded-xl text-black"
@@ -66,15 +81,11 @@ const LogInPage = () => {
             formik.handleSubmit();
           }}
         >
-          Log in
+          Sign Up
         </Button>
         <div className="gap-4 flex flex-col items-center justify-center">
-          <Link href="/signup">
-            <p className="underline">If you dont have account ?</p>
-          </Link>
-          <p>or</p>
-          <Link href="/forgotPassword">
-            <p className="underline">Forgot password ?</p>
+          <Link href="/login">
+            <p className="underline">If you already have account ?</p>
           </Link>
         </div>
       </div>
@@ -82,4 +93,4 @@ const LogInPage = () => {
   );
 };
 
-export default LogInPage;
+export default SignUp;

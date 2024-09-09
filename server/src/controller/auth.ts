@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
+//comp
+
 import User from "../model/user.ts";
 import MyError from "../utils/myError.ts";
 
@@ -56,16 +58,23 @@ export const signup = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log("SIGNUP WPRKING");
   try {
-    const newUser = req.body;
+    const { userEmail, userPassword, userName } = req.body;
 
-    const isExist = await User.findOne({ email: newUser.email });
+    const isExist = await User.findOne({ email: userEmail });
 
     if (isExist) {
       throw new MyError("User is registered, go to login", 400);
     }
 
-    const user = await User.create({ ...newUser });
+    const user = await User.create({
+      name: userName,
+      email: userEmail,
+      password: userPassword,
+    });
+
+    console.log("USER SHINE", user);
 
     res.status(201).json({
       message: "Шинэ хэрэглэгч амжилттай бүртгэгдлээ ",

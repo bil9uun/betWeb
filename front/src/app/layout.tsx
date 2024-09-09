@@ -9,6 +9,7 @@ import Header from "@/components/Header";
 import PageTransition from "@/components/PageTransition";
 import StairTransition from "@/components/StairTransition";
 import { UserProvider } from "@/context/userProvider";
+import { MatchProvider } from "@/context/matchProvider";
 
 const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -30,10 +31,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={jetBrainsMono.variable}>
         <UserProvider>
-          <Header />
-          <StairTransition />
-          <PageTransition>{children}</PageTransition>
-          <ToastContainer />
+          <MatchProvider>
+            <Header />
+            <StairTransition />
+            <PageTransition>{children}</PageTransition>
+            <ToastContainer />
+          </MatchProvider>
         </UserProvider>
       </body>
     </html>

@@ -1,45 +1,34 @@
-import {
-  Cloud,
-  CreditCard,
-  Github,
-  Keyboard,
-  LifeBuoy,
-  LogOut,
-  Mail,
-  MessageSquare,
-  Plus,
-  PlusCircle,
-  Settings,
-  User,
-  UserPlus,
-  Users,
-} from "lucide-react";
+//comp
+
+import { LogOut, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { IUser } from "@/interface";
 
-export function UserDropDown() {
+export function UserDropDown({
+  logout,
+  loggedUser,
+}: {
+  logout: () => void;
+  loggedUser: IUser;
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar>
+        <Avatar className="bg-accent text-black text-2xl">
           <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback>{loggedUser.name?.substring(0, 1)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="w-56 bg-primary">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
@@ -48,7 +37,7 @@ export function UserDropDown() {
             <span>Profile</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => logout()}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>

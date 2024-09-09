@@ -12,7 +12,8 @@ import { useRouter } from "next/navigation";
 
 const Header = () => {
   const router = useRouter();
-  const { loggedUser } = useUser();
+  const { loggedUser, logout } = useUser();
+
   return (
     <header className="py-8 xl:py-12 text-white sticky top-0 l-0 z-10 bg-primary">
       <div className="container mx-auto flex justify-between items-center">
@@ -21,15 +22,22 @@ const Header = () => {
           <h1 className="text-accent flex flex-col font-extralight xl:flex-row xl:gap-3">
             Hello
             <span className="text-xl text-white font-semibold">
-              Bilguun Banzragch
+              {loggedUser ? loggedUser.name : "BetWeb"}
             </span>
           </h1>
         </Link>
+        {/* Balance */}
+        <div className="flex flex-col justify-center items-center">
+          <p className="text-xs">{loggedUser ? "Balance:" : ""}</p>
+          <h1>{loggedUser ? loggedUser.balance : ""}</h1>
+        </div>
         {/* desktop nav and hire button  */}
         <div className="hidden xl:flex items-center gap-8">
-          <Nav />
           {loggedUser ? (
-            <UserDropDown />
+            <div className="xl:flex items-center gap-8">
+              <Nav />
+              <UserDropDown logout={logout} loggedUser={loggedUser} />
+            </div>
           ) : (
             <Button
               className="bg-accent text-black rounded-xl hover:text-white"
@@ -43,7 +51,7 @@ const Header = () => {
         </div>
         {/* mobile nav */}
         <div className="xl:hidden">
-          <MobileNav />
+          <MobileNav loggedUser={loggedUser} />
         </div>
       </div>
     </header>

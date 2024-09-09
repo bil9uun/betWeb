@@ -1,25 +1,34 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
-const links = [
-  {
-    name: "home",
-    path: "/",
-  },
-  {
-    name: "Tournaments",
-    path: "/tournaments",
-  },
-  {
-    name: "Bets",
-    path: "/bets",
-  },
-];
+//comp
+
+import { useUser } from "@/context/userProvider";
 
 const Nav = () => {
   const pathname = usePathname();
+
+  const { loggedUser } = useUser();
+  const links = [
+    {
+      name: "home",
+      path: "/",
+    },
+    {
+      name: "Tournaments",
+      path: "/tournaments",
+    },
+    {
+      name: "Bets",
+      path: `/bets/${loggedUser?._id}`,
+    },
+    {
+      name: "Scoreboard",
+      path: `/scoreboard`,
+    },
+  ];
   return (
     <nav className="flex gap-8">
       {links.map((link, index) => {

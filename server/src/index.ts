@@ -6,10 +6,12 @@ import cors from "cors";
 import AuthRoutes from "./routes/auth.ts";
 import UserRoutes from "./routes/user.ts";
 import MatchRoutes from "./routes/match.ts";
+import BettedMatchRoutes from "./routes/bettedMatch.ts";
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT;
+const MONGO_URI = process.env.MONGO_URI as string;
 
 app.use(express.json());
 app.use(cors());
@@ -17,12 +19,11 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.send("Hello betWeb");
 });
-
 app.use("/auth", AuthRoutes);
 app.use("/user", UserRoutes);
 app.use("/match", MatchRoutes);
+app.use("/bettedMatch", BettedMatchRoutes);
 
-const MONGO_URI = process.env.MONGO_URI as string;
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("MongoDB connected"))

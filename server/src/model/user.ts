@@ -1,32 +1,13 @@
 import { Schema, model, Document } from "mongoose";
 import bcrypt from "bcrypt";
 
-interface IBet {
-  hash: String;
-  matchType: String;
-  streamUrl: null | String;
-  startsAt: Date;
-  leagueName: String;
-  leagueUrl: String;
-  choice?: String;
-  teams: [
-    {
-      name: String;
-      url: String;
-    },
-    {
-      name: String;
-      url: String;
-    }
-  ];
-}
-
 interface IUser extends Document {
   name: string;
   email: string;
   password: string;
   avatarImg?: string;
   otp?: string;
+  balance?: number;
   createdAt?: Date;
 }
 
@@ -44,15 +25,16 @@ const UserSchema = new Schema<IUser>({
     type: String,
     required: [true, "password is required"],
     minlength: 6,
-    // select: false,
   },
   avatarImg: {
     type: String,
+    default: "https://loadcs.com/img/main.jpg",
   },
   otp: {
     type: String,
     default: "",
   },
+  balance: { type: Number, default: 500000, required: true },
   createdAt: {
     type: Date,
     default: new Date(),

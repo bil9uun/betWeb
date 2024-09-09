@@ -1,22 +1,26 @@
 import { Schema, model, ObjectId } from "mongoose";
-import bcrypt from "bcrypt";
 interface IBettedMatchSchema {
   user: ObjectId;
   match: ObjectId;
   chosenTeam: string;
   chosenOdds: number;
   amount: number;
+  minus: boolean;
+  paid: boolean;
   totalAmount: number;
   createdAt: Date;
+  chosenTeamW: string;
 }
 
 const BettedMatchSchema = new Schema<IBettedMatchSchema>({
-  user: { type: Schema.ObjectId, ref: "User", required: true },
-  match: { type: Schema.ObjectId, ref: "Match", required: true },
+  user: { type: Schema.ObjectId, ref: "User", required: true, default: "" },
+  match: { type: Schema.ObjectId, ref: "Match", required: true, default: "" },
   chosenTeam: { type: String, required: true },
   chosenOdds: { type: Number, required: true },
-  amount: { type: Number, required: true },
+  minus: { type: Boolean, required: true },
+  paid: { type: Boolean, required: true, default: false },
   totalAmount: { type: Number, required: true },
+  chosenTeamW: { type: String, required: true },
   createdAt: {
     type: Date,
     default: new Date(),

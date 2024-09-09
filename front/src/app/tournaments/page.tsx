@@ -1,6 +1,4 @@
-"use client";
-
-import Tournament from "@/components/tournaments/Tournament";
+import Tournament from "@/app/tournaments/Tournament";
 
 const Tournaments = () => {
   return (
